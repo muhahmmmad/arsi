@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Architect Studio</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif}
+html{scroll-behavior:smooth}
+
+body{background:#f5f5f5;color:#111;transition:.4s}
+.dark{background:#111;color:#fff}
+
+nav{
+position:fixed;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:20px 50px;
+background:rgba(255,255,255,.7);
+backdrop-filter:blur(10px);
+z-index:1000;
+}
+.dark nav{background:rgba(0,0,0,.6)}
+
+nav a{text-decoration:none;color:inherit;margin-left:20px}
+
+.hero{
+height:100vh;
+background:linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+url('https://wallup.net/wp-content/uploads/2019/09/455798-construction-work-building-job-profession-architecture-design-2.jpg');
+background-size:cover;
+background-position:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+color:#fff;
+padding:20px;
+}
+
+.hero h1{font-size:60px;margin-bottom:20px}
+.hero p{max-width:600px}
+
+.section{padding:100px 50px;max-width:1200px;margin:auto}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:30px;
+text-align:center;
+margin-top:40px;
+}
+.stats div{
+padding:20px;
+background:white;
+border-radius:16px;
+}
+.dark .stats div{background:#222}
+
+.portfolio-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+margin-top:40px;
+}
+
+.card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+cursor:pointer;
+transition:.4s;
+}
+.dark .card{background:#222}
+
+.card:hover{transform:translateY(-10px)}
+
+.card img{width:100%;height:220px;object-fit:cover}
+.card-content{padding:15px}
+
+input{
+padding:10px;
+border-radius:8px;
+border:1px solid #ccc;
+margin-top:20px;
+width:100%;
+max-width:300px;
+}
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.8);
+display:none;
+justify-content:center;
+align-items:center;
+padding:20px;
+z-index:2000;
+}
+
+.modal-content{
+background:white;
+padding:30px;
+border-radius:20px;
+max-width:800px;
+width:100%;
+}
+.dark .modal-content{background:#222;color:white}
+
+.modal-gallery{
+display:flex;
+gap:10px;
+margin-top:15px;
+}
+.modal-gallery img{
+width:80px;
+height:60px;
+object-fit:cover;
+cursor:pointer;
+border-radius:8px;
+}
+
+.services{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:30px;
+margin-top:40px;
+}
+
+.service-box{
+background:white;
+padding:30px;
+border-radius:20px;
+}
+.dark .service-box{background:#222}
+
+.contact-form{
+display:flex;
+flex-direction:column;
+gap:15px;
+max-width:500px;
+margin-top:40px;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:black;
+color:white;
+}
+
+.dark button{background:white;color:black}
+
+footer{
+background:black;
+color:#aaa;
+text-align:center;
+padding:30px;
+margin-top:80px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+<div><strong>Architect Studio</strong></div>
+<div>
+<a href="#portfolio">Portfolio</a>
+<a href="#services">Services</a>
+<a href="#contact">Contact</a>
+<button onclick="toggleDark()">🌙</button>
+</div>
+</nav>
+
+<section class="hero">
+<h1>Create Your Dreams With Us.</h1>
+<p>TIGAPUTRAJAYAPERKASA</p>
+</section>
+
+<section class="section">
+<h2>Studio Experience</h2>
+<div class="stats">
+<div><h1>9+</h1><p>Years Experience</p></div>
+<div><h1>9+</h1><p>Projects Completed</p></div>
+<div><h1>9+</h1><p>Happy Clients</p></div>
+</div>
+</section>
+
+<section class="section" id="portfolio">
+<h2>Portfolio</h2>
+<input type="text" placeholder="Search project..." onkeyup="searchProject(this.value)">
+<div class="portfolio-grid" id="portfolioGrid"></div>
+</section>
+
+<section class="section" id="services">
+<h2>Services</h2>
+<div class="services">
+<div class="service-box"><h3>Klasik Modern</h3><p>-.</p></div>
+<div class="service-box"><h3>Minimalis</h3><p>-.</p></div>
+<div class="service-box"><h3>-</h3><p>-.</p></div>
+</div>
+</section>
+
+<section class="section" id="contact">
+<h2>Contact</h2>
+<div class="contact-form">
+<input type="text" placeholder="Your Name">
+<input type="email" placeholder="Your Email">
+<textarea placeholder="Your Message" rows="4"></textarea>
+<button>Send Message</button>
+</div>
+</section>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<img id="mainImage" style="width:100%;border-radius:15px;">
+<div class="modal-gallery" id="gallery"></div>
+<h3 id="modalTitle"></h3>
+<p id="modalDesc"></p>
+<br>
+<button onclick="closeModal()">Close</button>
+</div>
+</div>
+
+<footer>
+© 2026 Aab Architect Studio
+</footer>
+
+<script>
+const projects=[
+{
+title:"Uluwiyah University",
+images:[
+"https://cloud.jpnn.com/photo/jatim/news/normal/2025/12/08/institut-agama-islam-uluwiyah-resmi-bertransformasi-menjadi-hzow.jpg",
+""
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Masjid Al Muttaqien",
+images:[
+"https://sites.google.com/student.smktelkom-mlg.sch.id/masjid-al-muttaqien-jembrung?usp=sharing",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Masjid Ussisa 'Ala Al-Taqwa",
+images:[
+"https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Yayasan Roudlotul Muttaqin",
+images:[
+"https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Gudang Sinjaya Tiga Mandiri",
+images:[
+"https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Kostan TigaPutraJaya",
+images:[
+"https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Rumah",
+images:[
+"https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Rumah",
+images:[
+"https://images.unsplash.com/photo-1600585154340-be6161a56a0c",
+"https://images.unsplash.com/photo-1600607687939-ce8a6c25118c"
+],
+desc:"Modern tropical residence with passive cooling strategy."
+},
+{
+title:"Rumah",
+images:[
+"https://images.unsplash.com/photo-1502672260266-1c1ef2d93688",
+"https://images.unsplash.com/photo-1492724441997-5dc865305da7"
+],
+desc:"Industrial urban coffee shop concept."
+}
+];
+
+function loadProjects(list=projects){
+const grid=document.getElementById("portfolioGrid");
+grid.innerHTML="";
+list.forEach(p=>{
+grid.innerHTML+=`
+<div class="card" onclick='openModal(${JSON.stringify(p)})'>
+<img src="${p.images[0]}">
+<div class="card-content">
+<h3>${p.title}</h3>
+</div>
+</div>
+`;
+});
+}
+
+function searchProject(keyword){
+const filtered=projects.filter(p=>p.title.toLowerCase().includes(keyword.toLowerCase()));
+loadProjects(filtered);
+}
+
+function openModal(project){
+document.getElementById("modal").style.display="flex";
+document.getElementById("modalTitle").innerText=project.title;
+document.getElementById("modalDesc").innerText=project.desc;
+document.getElementById("mainImage").src=project.images[0];
+
+const gallery=document.getElementById("gallery");
+gallery.innerHTML="";
+project.images.forEach(img=>{
+gallery.innerHTML+=`<img src="${img}" onclick="document.getElementById('mainImage').src='${img}'">`;
+});
+}
+
+function closeModal(){
+document.getElementById("modal").style.display="none";
+}
+
+function toggleDark(){
+document.body.classList.toggle("dark");
+}
+
+loadProjects();
+</script>
+
+</body>
+</html>
